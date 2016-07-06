@@ -1,5 +1,4 @@
 version: 1.0.{build}
 build:
   verbosity: minimal
-build:
   project: EndavaScrum\EndavaScrum.sln
