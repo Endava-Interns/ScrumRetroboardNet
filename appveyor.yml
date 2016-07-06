@@ -1,4 +1,6 @@
 version: 1.0.{build}
+before_build:
+	- nuget restore EndavaScrum\EndavaScrum.sln
 build:
   verbosity: minimal
   project: EndavaScrum\EndavaScrum.sln
