@@ -1,0 +1,3 @@
+language: csharp
+solution: EndavaScrum.sln
+before_install: cd EndavaScrum
