@@ -1,5 +1,0 @@
-language: csharp
-solution: EndavaScrum.sln
-before_install: cd EndavaScrum
-script:
-  - xbuild /p:VbcToolExe=vbnc.exe EndavaScrum.sln
