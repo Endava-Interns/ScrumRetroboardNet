@@ -7,6 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+<<<<<<< HEAD
 namespace EndavaScrum.Models {
     using System;
     using System.Collections.Generic;
@@ -20,6 +21,24 @@ namespace EndavaScrum.Models {
         public string session_id { get; set; }
         public bool is_changed { get; set; }
 
+=======
+namespace EndavaScrum.Models
+{
+    using System;
+    using System.Collections.Generic;
+    
+    public partial class Session
+    {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Session()
+        {
+            this.Users = new HashSet<User>();
+        }
+    
+        public string session_id { get; set; }
+        public bool is_changed { get; set; }
+    
+>>>>>>> master
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> Users { get; set; }
     }
