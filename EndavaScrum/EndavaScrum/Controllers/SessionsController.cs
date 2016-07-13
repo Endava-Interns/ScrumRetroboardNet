@@ -1,19 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
+﻿using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using EndavaScrum.Models;
-using System.Text;
 
-namespace EndavaScrum.Controllers {
+namespace EndavaScrum.Controllers
+{
     public class SessionsController : ApiController {
-        private DbEntities db = new DbEntities();
+        private IDbEntities db = new DbEntities();
+
+        public SessionsController() { }
+
+        public SessionsController(IDbEntities context)
+        {
+            db = context;
+        }
 
         // GET: api/Sessions
         public IQueryable<Session> GetSessions() {
@@ -42,7 +44,7 @@ namespace EndavaScrum.Controllers {
                 return BadRequest();
             }
 
-            db.Entry(session).State = EntityState.Modified;
+            db.MarkAsModified(session);
 
             try {
                 db.SaveChanges();
