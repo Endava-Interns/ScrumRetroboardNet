@@ -7,8 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EndavaScrum.Models
-{
+namespace EndavaScrum.Models {
     using System;
     using System.Configuration;
     using System.Data.Common;
@@ -16,18 +15,20 @@ namespace EndavaScrum.Models
     using System.Data.Entity.Core.EntityClient;
     using System.Data.Entity.Infrastructure;
 
-    public partial class DbEntities : DbContext
-    {
+    public partial class DbEntities : DbContext, IDbEntities {
         public DbEntities()
-            : base("name=DbEntities")
-        {
+            : base("name=DbEntities") {
         }
-    
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder) {
             throw new UnintentionalCodeFirstException();
         }
-    
+
+        public void MarkAsModified(Session session)
+        {
+            Entry(session).State = EntityState.Modified;
+        }
+
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
         public virtual DbSet<User> Users { get; set; }

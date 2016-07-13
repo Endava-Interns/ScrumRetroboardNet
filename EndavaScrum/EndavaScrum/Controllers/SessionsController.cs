@@ -1,34 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
+﻿using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using EndavaScrum.Models;
+using System.Web.Http.Cors;
 
 namespace EndavaScrum.Controllers
 {
-    public class SessionsController : ApiController
-    {
-        private DbEntities db = new DbEntities();
+    [EnableCors(origins: "http://scrumretroboard-angular.herokuapp.com", headers: "*", methods: "*")]
+    public class SessionsController : ApiController {
+        private IDbEntities db = new DbEntities();
+
+        public SessionsController() { }
+
+        public SessionsController(IDbEntities context)
+        {
+            db = context;
+        }
 
         // GET: api/Sessions
-        public IQueryable<Session> GetSessions()
-        {
+        public IQueryable<Session> GetSessions() {
             return db.Sessions;
         }
 
         // GET: api/Sessions/5
         [ResponseType(typeof(Session))]
-        public IHttpActionResult GetSession(string id)
-        {
+        public IHttpActionResult GetSession(string id) {
             Session session = db.Sessions.Find(id);
-            if (session == null)
-            {
+            if (session == null) {
                 return NotFound();
             }
 
@@ -37,62 +37,44 @@ namespace EndavaScrum.Controllers
 
         // PUT: api/Sessions/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutSession(string id, Session session)
-        {
-            if (!ModelState.IsValid)
-            {
+        public IHttpActionResult PutSession(string id, Session session) {
+            if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
 
-            if (id != session.session_id)
-            {
+            if (id != session.session_id) {
                 return BadRequest();
             }
 
-            db.Entry(session).State = EntityState.Modified;
+            db.MarkAsModified(session);
 
-            try
-            {
+            try {
                 db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SessionExists(id))
-                {
+            } catch (DbUpdateConcurrencyException) {
+                if (!SessionExists(id)) {
                     return NotFound();
-                }
-                else
-                {
+                } else {
                     throw;
                 }
             }
-
             return StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST: api/Sessions
         [ResponseType(typeof(Session))]
-        public IHttpActionResult PostSession(Session session)
-        {
-            if (!ModelState.IsValid)
-            {
+        public IHttpActionResult PostSession(Session session) {
+            if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
 
             db.Sessions.Add(session);
 
-            try
-            {
+            try {
                 db.SaveChanges();
-            }
-            catch (DbUpdateException)
-            {
-                if (SessionExists(session.session_id))
-                {
+            } catch (DbUpdateException) {
+                if (SessionExists(session.session_id)) {
                     return Conflict();
-                }
-                else
-                {
+                } else {
                     throw;
                 }
             }
@@ -102,11 +84,9 @@ namespace EndavaScrum.Controllers
 
         // DELETE: api/Sessions/5
         [ResponseType(typeof(Session))]
-        public IHttpActionResult DeleteSession(string id)
-        {
+        public IHttpActionResult DeleteSession(string id) {
             Session session = db.Sessions.Find(id);
-            if (session == null)
-            {
+            if (session == null) {
                 return NotFound();
             }
 
@@ -116,18 +96,31 @@ namespace EndavaScrum.Controllers
             return Ok(session);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
+        protected override void Dispose(bool disposing) {
+            if (disposing) {
                 db.Dispose();
             }
             base.Dispose(disposing);
         }
 
-        private bool SessionExists(string id)
-        {
+        private bool SessionExists(string id) {
             return db.Sessions.Count(e => e.session_id == id) > 0;
+        }
+
+        [Route("api/Sessions/{id}/Modified")]
+        [HttpGet]
+        public IHttpActionResult IsSessionModified(string id) {
+            if (!SessionExists(id)) {
+                return NotFound();
+            }
+            Session session = db.Sessions.Find(id);
+            return Ok(session.is_changed);
+        }
+
+        [Route("api/Sessions/ActiveSessions")]
+        [HttpGet]
+        public IHttpActionResult GetActiveSessionsNumber() {
+            return Ok(db.Sessions.Count());
         }
     }
 }

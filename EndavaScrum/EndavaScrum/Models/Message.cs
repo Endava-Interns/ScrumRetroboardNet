@@ -7,18 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EndavaScrum.Models
-{
+namespace EndavaScrum.Models {
     using System;
     using System.Collections.Generic;
-    
-    public partial class Message
-    {
+
+    public partial class Message {
         public int message_id { get; set; }
         public string text { get; set; }
         public int user_id { get; set; }
         public string category { get; set; }
-    
+
         public virtual User User { get; set; }
     }
 }
