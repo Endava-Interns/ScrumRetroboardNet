@@ -1,7 +1,6 @@
 version: 1.0.{build}
 before_build:
   - nuget install Microsoft.AspNet.WebApi.Cors
-  - nuget update
   - nuget restore EndavaScrum\EndavaScrum.sln
 build:
   verbosity: minimal
