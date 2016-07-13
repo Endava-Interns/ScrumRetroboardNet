@@ -4,9 +4,11 @@ using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
 using EndavaScrum.Models;
+using System.Web.Http.Cors;
 
 namespace EndavaScrum.Controllers
 {
+    [EnableCors(origins: "http://scrumretroboard-angular.herokuapp.com", headers: "*", methods: "*")]
     public class SessionsController : ApiController {
         private IDbEntities db = new DbEntities();
 
