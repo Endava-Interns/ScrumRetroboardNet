@@ -51,7 +51,7 @@ namespace EndavaScrum.Controllers
             try {
                 db.SaveChanges();
             } catch (DbUpdateConcurrencyException) {
-                if (!SessionExists(id)) {
+                if (!_SessionExists(id)) {
                     return NotFound();
                 } else {
                     throw;
@@ -72,7 +72,7 @@ namespace EndavaScrum.Controllers
             try {
                 db.SaveChanges();
             } catch (DbUpdateException) {
-                if (SessionExists(session.session_id)) {
+                if (_SessionExists(session.session_id)) {
                     return Conflict();
                 } else {
                     throw;
@@ -103,14 +103,14 @@ namespace EndavaScrum.Controllers
             base.Dispose(disposing);
         }
 
-        private bool SessionExists(string id) {
+        private bool _SessionExists(string id) {
             return db.Sessions.Count(e => e.session_id == id) > 0;
         }
 
         [Route("api/Sessions/{id}/Modified")]
         [HttpGet]
         public IHttpActionResult IsSessionModified(string id) {
-            if (!SessionExists(id)) {
+            if (!_SessionExists(id)) {
                 return NotFound();
             }
             Session session = db.Sessions.Find(id);
@@ -121,6 +121,12 @@ namespace EndavaScrum.Controllers
         [HttpGet]
         public IHttpActionResult GetActiveSessionsNumber() {
             return Ok(db.Sessions.Count());
+        }
+
+        [Route("api/Sessions/SessionExists/{id}")]
+        [HttpGet]
+        public IHttpActionResult SessionExists(string id) {
+            return Ok(_SessionExists(id));
         }
     }
 }
