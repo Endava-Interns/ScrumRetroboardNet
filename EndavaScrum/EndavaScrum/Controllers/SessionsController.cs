@@ -8,7 +8,7 @@ using System.Web.Http.Cors;
 
 namespace EndavaScrum.Controllers
 {
-    [EnableCors(origins: "https://endava-scrum-dev.herokuapp.com/", headers: "*", methods: "*")]
+    //[EnableCors(origins: "https://endava-scrum-dev.herokuapp.com/", headers: "*", methods: "*")]
     public class SessionsController : ApiController {
         private IDbEntities db = new DbEntities();
 
