@@ -37,6 +37,7 @@ namespace EndavaScrum.Controllers
 
         // PUT: api/Sessions/5
         [ResponseType(typeof(void))]
+        [HttpPut]
         public IHttpActionResult PutSession(string id, Session session) {
             if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
@@ -119,12 +120,14 @@ namespace EndavaScrum.Controllers
 
         [Route("api/Sessions/ActiveSessions")]
         [HttpGet]
+        [ResponseType(typeof(int))]
         public IHttpActionResult GetActiveSessionsNumber() {
             return Ok(db.Sessions.Count());
         }
 
         [Route("api/Sessions/SessionExists/{id}")]
         [HttpGet]
+        [ResponseType(typeof(bool))]
         public IHttpActionResult SessionExists(string id) {
             return Ok(_SessionExists(id));
         }
